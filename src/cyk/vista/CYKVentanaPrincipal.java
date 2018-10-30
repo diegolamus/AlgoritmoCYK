@@ -16,6 +16,8 @@ public class CYKVentanaPrincipal extends JFrame{
 	private JButton verRespuesta;
 	private JLabel verRespuestaLabel;
 	private final static String VER_RESPUESTA="Ver Respuesta";
+	private final static String CANTIDAD_PRODUCCIONES="Aceptar";
+
 	
 	public CYKVentanaPrincipal () {
 		setSize(600, 400);
@@ -26,10 +28,15 @@ public class CYKVentanaPrincipal extends JFrame{
 		
 		//panel superior que muestra un label que indica escribir la cantidad de producciones
 		Panel panelAux= new Panel();
-		panelAux.setLayout(new GridLayout(1, 2));
+		panelAux.setLayout(new GridLayout(1, 3));
 		panelAux.add(new JLabel("Cantidad de producciones: "));
 		cantidadProducciones = new JTextArea();
 		panelAux.add(cantidadProducciones);
+		
+		JButton cantidadProducciones = new JButton(CANTIDAD_PRODUCCIONES);
+		cantidadProducciones.setActionCommand(CANTIDAD_PRODUCCIONES);
+		panelAux.add(cantidadProducciones);
+		
 		add(panelAux, BorderLayout.NORTH);
 		
 		
