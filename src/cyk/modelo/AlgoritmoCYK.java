@@ -5,10 +5,12 @@ import cyk.entidades.Variable;
 public class AlgoritmoCYK {
 
 	/**
-	 * @Descripcion Este metodo genera una matriz CYK a partir de las variables y la cadena que recibe como parametro.
+	 * @Descripcion Este metodo genera una matriz CYK a partir de las variables y la
+	 *              cadena que recibe como parametro.
 	 * @param variables variables que hacen parte de la gramatica
-	 * @param cadena cadena sobre la cual se construira la matriz CYK
-	 * @return matrizCYK resultado de algoritmo CYK aplicado sobre las variables y cadena de entrada, null si la cadena de entrada es vacia
+	 * @param cadena    cadena sobre la cual se construira la matriz CYK
+	 * @return matrizCYK resultado de algoritmo CYK aplicado sobre las variables y
+	 *         cadena de entrada, null si la cadena de entrada es vacia
 	 */
 	public static String[][] generaMatriz(Variable[] variables, String cadena) {
 		// Generar matriz CYK
@@ -42,7 +44,7 @@ public class AlgoritmoCYK {
 					}
 				}
 			}
-			// Eliminar ultima coma en caso de que se agregue por lo menor una variable
+			// Eliminar ultima coma en caso de que se agregue por lo menos una variable
 			if (matrizCYK[i][0] != null && !matrizCYK[i][0].trim().equals("")) {
 				matrizCYK[i][0] = matrizCYK[i][0].substring(0, matrizCYK[i][0].length() - 1);
 			}
@@ -51,37 +53,70 @@ public class AlgoritmoCYK {
 
 	private static void llenarColumnas(String[][] matrizCYK, Variable[] variables, String cadena) {
 		// Iterar sobre las columnas de la matriz
-		for (int i = 1; i<cadena.length();i++) {
+		for (int i = 1; i < cadena.length(); i++) {
 			// Iterar sobre las filas de la matriz
-			for (int j = 0; j<cadena.length()-i;j++) {
+			for (int j = 0; j < cadena.length() - i; j++) {
 				// Iterar sobre el K
-				String resultado ="";
-				for (int k =  1; k<=i; k++) {
+				for (int k = 1; k <= i; k++) {
 					// Generar producto
-					matrizCYK[j][i] += producto(matrizCYK[j][k],matrizCYK[j+k][i-k+1]);
+					matrizCYK[j][i] += producto(matrizCYK[j][k], matrizCYK[j + k][i - k + 1]) + ",";
 				}
+				// Eliminar ultima coma en caso de que se agregue por lo menos una variable
+				if (matrizCYK[j][i] != null && !matrizCYK[j][i].trim().equals("")) {
+					matrizCYK[j][i] = matrizCYK[j][i].substring(0, matrizCYK[j][i].length() - 1);
+				}
+				// Ver que variables meten las variables encontradas
+				reemplazarVariables(matrizCYK, variables, j, i);
 			}
 		}
 	}
-	
+
+	private static void reemplazarVariables(String[][] matrizCYK, Variable[] variables, int fila, int columna) {
+		// Recuperar producciones nuevas
+		String[] prod = matrizCYK[fila][columna].split(",");
+		// Limpiar matriz CYK
+		matrizCYK[fila][columna] = "";
+		// Iterar sobre la producciones nuevas
+		for (int i = 0; i < prod.length; i++) {
+			// Iterar sobre las variables
+			for (Variable v : variables) {
+				// Crear variable para verificar que no se agregue una variable dos veces
+				boolean seAgregoLaVariable = false;
+				// Iterar sobre las producciones de la variable
+				for (String produccion : v.getProducciones()) {
+					// Si la produccion es igual a el caracter que se esta revisando, se agrega la
+					// variable en la posicion adecuada
+					if (produccion.equals(prod[i] + "") && !seAgregoLaVariable) {
+						matrizCYK[i][0] += produccion + ",";
+						seAgregoLaVariable = true;
+					}
+				}
+			}
+		}
+		// Eliminar ultima coma en caso de que se agregue por lo menos una variable
+		if (matrizCYK[fila][columna] != null && !matrizCYK[fila][columna].trim().equals("")) {
+			matrizCYK[fila][columna] = matrizCYK[fila][columna].substring(0, matrizCYK[fila][columna].length() - 1);
+		}
+	}
+
 	private static String producto(String a, String b) {
 		String producto = "";
 		// Verificar si el string a, o el string b tiene mas de dos variables
-		if(a.split(",").length> 1 || b.split(",").length>1) {
+		if (a.split(",").length > 1 || b.split(",").length > 1) {
 			// Separar variables
 			String[] aux_a = a.split(" ");
 			String[] aux_b = b.split(" ");
 			for (String a1 : aux_a) {
 				for (String b1 : aux_b) {
-					producto+=a1+b1+",";
+					producto += a1 + b1 + ",";
 				}
 			}
 			// Eliminar ultima coma
-			producto = producto.substring(0,producto.length()-1);
+			producto = producto.substring(0, producto.length() - 1);
 		}
 		// Si no las tiene operar normal
 		else {
-			producto= a+b;
+			producto = a + b;
 		}
 		return producto;
 	}
