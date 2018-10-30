@@ -31,6 +31,7 @@ public class AlgoritmoCYK {
 		// Iterar sobre los caracteres
 		for (int i = 0; i < caracteres.length; i++) {
 			// Iterar sobre las variables
+			matrizCYK[i][0] = "";
 			for (Variable v : variables) {
 				// Crear variable para verificar que no se agregue una variable dos veces
 				boolean seAgregoLaVariable = false;
@@ -39,7 +40,7 @@ public class AlgoritmoCYK {
 					// Si la produccion es igual a el caracter que se esta revisando, se agrega la
 					// variable en la posicion adecuada
 					if (produccion.equals(caracteres[i] + "") && !seAgregoLaVariable) {
-						matrizCYK[i][0] += produccion + ",";
+						matrizCYK[i][0] += v.getVariable() + ",";
 						seAgregoLaVariable = true;
 					}
 				}
@@ -56,10 +57,11 @@ public class AlgoritmoCYK {
 		for (int i = 1; i < cadena.length(); i++) {
 			// Iterar sobre las filas de la matriz
 			for (int j = 0; j < cadena.length() - i; j++) {
+				matrizCYK[j][i] = "";
 				// Iterar sobre el K
-				for (int k = 1; k <= i; k++) {
+				for (int k = 0; k <i; k++) {
 					// Generar producto
-					matrizCYK[j][i] += producto(matrizCYK[j][k], matrizCYK[j + k][i - k + 1]) + ",";
+					matrizCYK[j][i] += producto(matrizCYK[j][k], matrizCYK[j+k][i-k-1]) + ",";
 				}
 				// Eliminar ultima coma en caso de que se agregue por lo menos una variable
 				if (matrizCYK[j][i] != null && !matrizCYK[j][i].trim().equals("")) {
@@ -108,7 +110,10 @@ public class AlgoritmoCYK {
 			String[] aux_b = b.split(" ");
 			for (String a1 : aux_a) {
 				for (String b1 : aux_b) {
-					producto += a1 + b1 + ",";
+					if(!a1.equals(b1))
+						producto += a1 + b1 + ",";
+					else
+						producto += a1 + ",";
 				}
 			}
 			// Eliminar ultima coma
@@ -116,7 +121,10 @@ public class AlgoritmoCYK {
 		}
 		// Si no las tiene operar normal
 		else {
-			producto = a + b;
+			if(!a.equals(b))
+				producto = a + b;
+			else
+				producto = a;
 		}
 		return producto;
 	}
