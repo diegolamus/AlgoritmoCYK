@@ -1,12 +1,11 @@
 package cyk.entidades;
 
-public class Produccion {
+public class Variable {
 
 	private String variable;
 	private String[] producciones;
 	
-	public Produccion(String variable, String[] producciones) {
-		super();
+	public Variable(String variable, String[] producciones) {
 		this.variable = variable;
 		this.producciones = producciones;
 	}
