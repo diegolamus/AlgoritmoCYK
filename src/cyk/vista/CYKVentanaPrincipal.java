@@ -77,6 +77,7 @@ public class CYKVentanaPrincipal extends JFrame{
 		panelAuxInferior.add(verRespuesta);
 		panelAuxInferior.add(verRespuestaLabel);
 		
+		
 		add(panelAuxInferior, BorderLayout.SOUTH);
 		
 	}
