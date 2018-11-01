@@ -54,21 +54,21 @@ public class AlgoritmoCYK {
 
 	private static void llenarColumnas(String[][] matrizCYK, Variable[] variables, String cadena) {
 		// Iterar sobre las columnas de la matriz
-		for (int i = 1; i < cadena.length(); i++) {
+		for (int j = 2; j <= cadena.length(); j++) {
 			// Iterar sobre las filas de la matriz
-			for (int j = 0; j < cadena.length() - i; j++) {
-				matrizCYK[j][i] = "";
+			for (int i = 1; i <= cadena.length() - j +1; i++) {
+				matrizCYK[i-1][j-1] = "";
 				// Iterar sobre el K
-				for (int k = 0; k <i; k++) {
+				for (int k = 1; k <j; k++) {
 					// Generar producto
-					matrizCYK[j][i] += producto(matrizCYK[j][k], matrizCYK[j+k][i-k-1]) + ",";
+					matrizCYK[i-1][j-1] += producto(matrizCYK[i-1][k-1], matrizCYK[i+k-1][j-1-k]) + ",";
 				}
 				// Eliminar ultima coma en caso de que se agregue por lo menos una variable
-				if (matrizCYK[j][i] != null && !matrizCYK[j][i].trim().equals("")) {
-					matrizCYK[j][i] = matrizCYK[j][i].substring(0, matrizCYK[j][i].length() - 1);
+				if (matrizCYK[i-1][j-1] != null && !matrizCYK[i-1][j-1].trim().equals("")) {
+					matrizCYK[i-1][j-1] = matrizCYK[i-1][j-1].substring(0, matrizCYK[i-1][j-1].length() - 1);
 				}
 				// Ver que variables meten las variables encontradas
-				reemplazarVariables(matrizCYK, variables, j, i);
+				reemplazarVariables(matrizCYK, variables, i-1, j-1);
 			}
 		}
 	}
@@ -89,7 +89,7 @@ public class AlgoritmoCYK {
 					// Si la produccion es igual a el caracter que se esta revisando, se agrega la
 					// variable en la posicion adecuada
 					if (produccion.equals(prod[i] + "") && !seAgregoLaVariable) {
-						matrizCYK[i][0] += produccion + ",";
+						matrizCYK[fila][columna] += v.getVariable() + ",";
 						seAgregoLaVariable = true;
 					}
 				}
@@ -106,8 +106,8 @@ public class AlgoritmoCYK {
 		// Verificar si el string a, o el string b tiene mas de dos variables
 		if (a.split(",").length > 1 || b.split(",").length > 1) {
 			// Separar variables
-			String[] aux_a = a.split(" ");
-			String[] aux_b = b.split(" ");
+			String[] aux_a = a.split(",");
+			String[] aux_b = b.split(",");
 			for (String a1 : aux_a) {
 				for (String b1 : aux_b) {
 					if(!a1.equals(b1))
