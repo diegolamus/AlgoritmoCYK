@@ -1,15 +1,21 @@
 package cyk.vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -25,6 +31,11 @@ public class CYKVentanaPrincipal extends JFrame{
 	private JTextArea cantidadProducciones;
 	private JButton verRespuestaBoton;
 	private JLabel verRespuestaLabel;
+	
+	
+	private JMenuBar barraMenu;
+	private JMenu menuarchiv;
+	private JMenuItem ayuda;
 	
 	
 	/**
@@ -53,7 +64,32 @@ public class CYKVentanaPrincipal extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		mundo = new AlgoritmoCYK();
+		barraMenu = new JMenuBar();
+		menuarchiv = new JMenu("Sobre este programa");
+		ayuda = new JMenuItem("Como usar este programa");
+		menuarchiv.add(ayuda);
+		barraMenu.add(menuarchiv);
 		
+		setJMenuBar(barraMenu);
+		
+		barraMenu.add(menuarchiv);
+		
+		ayuda.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// RUTA DEL ARCHIVO EN DATA
+					File path = new File("data/Instrucciones.pdf");
+					Desktop.getDesktop().open(path);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		
+			
 		
 		//declaracion del panel donde se van a introducir la producciones
 		producciones = new Panel();
@@ -72,6 +108,8 @@ public class CYKVentanaPrincipal extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				remove(producciones);
+				producciones = new Panel();
 				modificarPanelProducciones(Integer.parseInt(cantidadProducciones.getText()));
 				add(producciones, BorderLayout.CENTER);
 				
@@ -122,7 +160,10 @@ public class CYKVentanaPrincipal extends JFrame{
 	}
 
 	
-	
+	/**
+	 * Modifica el tamaño del panel para recibir la cantidad de producciones que se van a evaluar.
+	 * @param caantidadProducciones cantidad de producciones que se van a evaluar. Acorde a la cantidad se expande el panel.
+	 */
 	public void modificarPanelProducciones (int caantidadProducciones) {
 		producciones.setLayout(new GridLayout(caantidadProducciones+1, 2) );
 		producciones.add(new JLabel("Produccion "));
@@ -141,6 +182,7 @@ public class CYKVentanaPrincipal extends JFrame{
 		}
 		
 		this.pack();
+		this.setSize(600, 110 + caantidadProducciones*50);
 	}
 	
 	
