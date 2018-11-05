@@ -3,7 +3,7 @@ package cyk.test;
 import cyk.entidades.Variable;
 import cyk.modelo.AlgoritmoCYK;
 
-public class test {
+public class test2 {
 
 	
 	public static void main(String[] args) {
@@ -21,7 +21,7 @@ public class test {
 		String[] prod4 = {"BA","a"};
 		var[3] = new Variable("C", prod4);
 		
-		String[][] CYK = AlgoritmoCYK.generaMatriz(var, "bbab");
+		String[][] CYK = AlgoritmoCYK.generaMatriz(var, "aaba");
 		for (int i = 0; i < CYK.length; i++) {
 			for (int j = 0; j < CYK[0].length; j++) {
 				System.out.print("{" +CYK[i][j]+ "} ");
