@@ -65,6 +65,7 @@ public class CYKVentanaPrincipal extends JFrame{
 		cantidadProducciones = new JTextArea();
 		panelAux.add(cantidadProducciones);
 		
+		//boton que controla la creacion del panel estatico
 		JButton cantidadProduccionesBoton = new JButton(CANTIDAD_PRODUCCIONES);
 		cantidadProduccionesBoton.setActionCommand(CANTIDAD_PRODUCCIONES);
 		cantidadProduccionesBoton.addActionListener(new ActionListener() {
@@ -85,7 +86,8 @@ public class CYKVentanaPrincipal extends JFrame{
 		
 		
 		Panel panelAuxInferior = new Panel();
-		panelAuxInferior.setLayout(new GridLayout(1, 3));
+		panelAuxInferior.setLayout(new GridLayout(2, 2));
+		panelAuxInferior.add(new JLabel("Cadena a probar: "));
 		JTextField cadenaAProbar = new JTextField();
 		panelAuxInferior.add(cadenaAProbar);
 		
@@ -102,6 +104,7 @@ public class CYKVentanaPrincipal extends JFrame{
 				}
 				//TODO
 				String [][] respuestaAMostrar = mundo.generaMatriz(variablesEntradas, cadenaAProbar.getText());
+				verRespuestaLabel.setText(respuestaAMostrar[0][respuestaAMostrar.length-1]);
 				
 			}
 		});
@@ -111,6 +114,7 @@ public class CYKVentanaPrincipal extends JFrame{
 		
 		panelAuxInferior.add(verRespuestaBoton);
 		panelAuxInferior.add(verRespuestaLabel);
+		
 		
 		
 		add(panelAuxInferior, BorderLayout.SOUTH);
